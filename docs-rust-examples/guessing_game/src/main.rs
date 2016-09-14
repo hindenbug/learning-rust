@@ -5,6 +5,7 @@ use std::cmp::Ordering;
 use rand::Rng;
 
 // Rust's built in number types i8, i16, i32, i64, u8, u16, u32, u64, isize, usize, f32, f64
+// learnings: let, match, methods, associated functions, using external crates, shadow
 
 fn ask_for_input() -> u32{
     println!("Please input your guess!");
@@ -20,6 +21,14 @@ fn ask_for_input() -> u32{
 
     // .parse() method on strings parses into some other type of number. Ex: into u32
     //  or '(turbofish)' ::<> [ ex: "somestring".parse::<u32>(); ]
+
+    // you generally move from ‘crash on error’ to ‘actually handle the error’, by switching from expect() to a match statement
+    /*
+        let guess: u32 = match guess.trim().parse() {
+          Ok(num) => num,
+          Err(_) => continue,
+        };
+    */
     let guess: u32 = guess.trim().parse()
         .expect("Please type a number!");
 
@@ -37,7 +46,6 @@ fn main() {
     let secret_number = generate_secret_number();
     let guess = ask_for_input();
 
-    println!("The secret number is {}", secret_number);
     println!("You guessed: {}", guess);
 
     match guess.cmp(&secret_number) {
