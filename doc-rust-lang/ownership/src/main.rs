@@ -14,7 +14,7 @@ fn main() {
     let _y = copy_semantics(a);
 
     // This works and returns 'true'
-    println!("{}", a);
+    // println!("{}", a);
 
 
     // example 2
@@ -25,6 +25,12 @@ fn main() {
     move_semantics(v);
     // Won't compile as it throws error "value moved here"
     // println!("{}", v[0]);
+
+    // IntroRustExample
+    // ownership transfered to adjective and name
+    let(adjective, name) = two_words();
+    let name = format!("{} {}", adjective, name);
+    print_out(name);
 
 }
 
@@ -37,3 +43,41 @@ fn move_semantics(v: Vec<i32>) -> Vec<i32>{
 }
 
 // If every function hands back ownership which can be tideous, this where borrowing comes in
+
+
+// Excellent Example on Ownership from: http://intorust.com/tutorial/ownership/
+
+fn two_words() -> (String, String) {
+    let string1 = format!("Fellow");
+    let string2 = format!("Rustaceans");
+
+    // transfer ownership
+    (string1, string2)
+}
+
+fn remove_vowels(name: String) -> (String, String) {
+    // Goal #1: What is needed here to make this compile?
+    // Sol : make the var mutable
+    let mut output = String::new();
+    for c in name.chars() {
+        match c {
+            'a' | 'e' | 'i' | 'o' | 'u' => {
+                // skip vowels
+            }
+            _ => {
+                output.push(c);
+            }
+        }
+    }
+
+    // transfer ownership
+    (output, name)
+}
+
+fn print_out(name: String) {
+    let (devowelized_name, name1) =  remove_vowels(name);
+    println!("Removing vowels yields {:?}", devowelized_name);
+
+    // Goal #2
+    println!("Removing vowels from {:?} yields {:?}", name1, devowelized_name);
+}
